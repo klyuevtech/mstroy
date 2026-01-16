@@ -20,8 +20,26 @@ export class TreeStore {
   }
 
   public getAllChildren(id: IdType): ItemType[] {
-    const children = this.getChildren(id)
-    return children.concat(children.map((child: ItemType) => this.getAllChildren(child.id)).flat())
+    const allChildren: ItemType[] = []
+    const queue: IdType[] = []
+
+    // Start with direct children
+    const directChildren = this.getChildren(id)
+    allChildren.push(...directChildren)
+    queue.push(...directChildren.map((child) => child.id))
+
+    // Process descendants
+    while (queue.length > 0) {
+      const currentId = queue.shift()!
+      const children = this.getChildren(currentId)
+
+      for (const child of children) {
+        allChildren.push(child)
+        queue.push(child.id)
+      }
+    }
+
+    return allChildren
   }
 
   public getAllParents(id: IdType): ItemType[] {
