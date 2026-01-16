@@ -1,4 +1,6 @@
-# test
+В корне локально нужно создать .env и добавить туда значение VITE_AG_GRID_KEY 
+
+# Mstroy test
 
 This template should help get you started developing with Vue 3 in Vite.
 
