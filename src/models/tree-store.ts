@@ -25,11 +25,20 @@ export class TreeStore {
   }
 
   public getAllParents(id: IdType): ItemType[] {
-    const parent = this.getItem(id)
-    if (!parent?.parent) {
-      return []
+    const parents: ItemType[] = []
+    let currentItem = this.getItem(id)
+
+    while (currentItem?.parent) {
+      const parentItem = this.getItem(currentItem.parent)
+      if (parentItem) {
+        parents.push(parentItem)
+        currentItem = parentItem
+      } else {
+        break
+      }
     }
-    return [parent].concat(this.getAllParents(parent.parent))
+
+    return parents
   }
 
   public addItem(item: ItemType): void {
